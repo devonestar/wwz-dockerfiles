@@ -1,0 +1,29 @@
+# UPDATE: 20160909
+[base]
+name=CentOS-$releasever - Base
+baseurl=http://mirror.kakao.com/centos/$releasever/os/$basearch/
+gpgcheck=0
+
+#released updates
+[update]
+name=CentOS-$releasever - Updates
+baseurl=http://mirror.kakao.com/centos/$releasever/updates/$basearch/
+gpgcheck=0
+
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever - Extras
+baseurl=http://mirror.kakao.com/centos/$releasever/extras/$basearch/
+gpgcheck=0
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus
+baseurl=http://mirror.kakao.com/centos/$releasever/centosplus/$basearch/
+gpgcheck=0
+
+[EPEL$releasever]
+name=EPEL-$releasever
+baseurl=http://mirror.kakao.com/epel/$releasever/$basearch/
+gpgcheck=0
+enabled=1

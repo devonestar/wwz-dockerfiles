@@ -1,0 +1,6 @@
+.idea/
+.idea/workspace.xml
+**/volume
+ROOT.war
+ROOT
+*.jar
