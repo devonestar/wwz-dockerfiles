@@ -1,0 +1,7 @@
+version: '3'
+services:
+  api:
+    environment:
+      - PHASE=local
+    env_file:
+      - env/gc-virtual.env

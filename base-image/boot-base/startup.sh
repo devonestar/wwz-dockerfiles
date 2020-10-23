@@ -24,8 +24,8 @@ export JAVA_OPTS="$JAVA_OPTS $CUSTOM_OPTIONS"
 
 # project env
 export JAVA_OPTS="$JAVA_OPTS -Dspring.profiles.active=$PHASE"
-export JAVA_OPTS="$JAVA_OPTS -Dspring.pid.file=$PID_PATH"
-export JAVA_OPTS="$JAVA_OPTS -Dlogging.file=$LOG_PATH"
+export JAVA_OPTS="$JAVA_OPTS -Dspring.pid.file=$PID_PATH/boot.pid"
+export JAVA_OPTS="$JAVA_OPTS -Dlogging.file=$LOG_PATH/application.log"
 # export JAVA_OPTS="$JAVA_OPTS -Dmanagement.server.port={{management_port}}"
 
 export JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager"
