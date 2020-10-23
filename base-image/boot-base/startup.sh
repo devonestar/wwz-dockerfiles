@@ -24,8 +24,8 @@ export JAVA_OPTS="$JAVA_OPTS $CUSTOM_OPTIONS"
 
 # project env
 export JAVA_OPTS="$JAVA_OPTS -Dspring.profiles.active=$PHASE"
-export JAVA_OPTS="$JAVA_OPTS -Dspring.pid.file=$PID_PATH"
-export JAVA_OPTS="$JAVA_OPTS -Dlogging.file=$LOG_PATH"
+export JAVA_OPTS="$JAVA_OPTS -Dspring.pid.file=$PID_PATH/boot.pid"
+export JAVA_OPTS="$JAVA_OPTS -Dlogging.file=$LOG_PATH/application.log"
 # export JAVA_OPTS="$JAVA_OPTS -Dmanagement.server.port={{management_port}}"
 
 export JAVA_OPTS="$JAVA_OPTS -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager"
@@ -41,4 +41,4 @@ export JAVA_OPTS="$JAVA_OPTS -Dnetworkaddress.cache.ttl=0"
 echo "Start with $SOURCE state !!!!!!!!!!!!"
 
 # Start tomcat
-$JAVA_HOME/bin/java $JAVA_OPTS -jar /home/deploy/services/boot/webapps/application.jar 1>/dev/null 2>&1
+$JAVA_HOME/bin/java $JAVA_OPTS -jar /home/deploy/services/boot/webapps/application.jar
