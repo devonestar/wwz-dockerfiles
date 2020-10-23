@@ -41,4 +41,4 @@ export JAVA_OPTS="$JAVA_OPTS -Dnetworkaddress.cache.ttl=0"
 echo "Start with $SOURCE state !!!!!!!!!!!!"
 
 # Start tomcat
-$JAVA_HOME/bin/java $JAVA_OPTS -jar /home/deploy/services/boot/webapps/application.jar 1>/dev/null 2>&1
+$JAVA_HOME/bin/java $JAVA_OPTS -jar /home/deploy/services/boot/webapps/application.jar
