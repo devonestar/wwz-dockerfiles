@@ -12,7 +12,8 @@ services:
   web:
     build: web
     environment:
-      - SERVER_DOMAIN=api
+      - SERVER_DOMAIN=_
+      - APP_NAME=api
     links:
       - api
     ports:
