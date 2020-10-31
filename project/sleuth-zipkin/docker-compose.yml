@@ -1,0 +1,79 @@
+version: '2.2'
+services:
+  storage:
+    build:
+      context: ./elasticsearch
+      dockerfile: Dockerfile
+    container_name: elasticsearch
+    environment:
+      - node.name=zipkin_es01
+      - cluster.name=es-docker-cluster
+      #      - discovery.seed_hosts=es02,es03
+      #      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - zipkin
+
+  kibana:
+    build:
+      context: ./kibana
+      dockerfile: Dockerfile
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - zipkin
+    depends_on:
+      - storage
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=elasticsearch
+      # X-Pack security 
+      # - ES_USERNAME=elastic
+      # - ES_PASSWORD=changeme
+      # Point the zipkin at the storage backend
+      - ES_HOSTS=elasticsearch:9200
+      # Uncomment to see requests to and from elasticsearch
+      # - ES_HTTP_LOGGING=BODY
+    ports:
+      - "9411:9411"
+    networks:
+      - zipkin
+    depends_on:
+      - storage
+        
+#  dependencies:
+#    image: openzipkin/zipkin-dependencies
+#    build:
+#      context: ./zipkin-dependencies-test
+#      dockerfile: Dockerfile
+#    container_name: dependencies
+#    entrypoint: cat /etc/crontabs/root # crond -f
+#    environment:
+#      - STORAGE_TYPE=elasticsearch
+#      - ES_HOSTS=elasticsearch:9200
+#      - ES_NODES_WAN_ONLY=true
+#    networks:
+#      - zipkin
+#    depends_on:
+#      - storage
+
+volumes:
+  data01:
+    driver: local
+
+networks:
+  zipkin:
+    driver: bridge
