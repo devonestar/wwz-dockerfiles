@@ -7,11 +7,11 @@ services:
     container_name: elasticsearch
     environment:
       - node.name=zipkin_es01
-      - cluster.name=es-docker-cluster
-      #      - discovery.seed_hosts=es02,es03
-      #      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.initial_master_nodes=zipkin_es01
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#         클러스터 구성 시 바인딩 할 원격 노드
+#      - discovery.seed_hosts=es02,es03
     ulimits:
       memlock:
         soft: -1
@@ -40,12 +40,11 @@ services:
     container_name: zipkin
     environment:
       - STORAGE_TYPE=elasticsearch
+      - ES_HOSTS=elasticsearch:9200
       # X-Pack security 
       # - ES_USERNAME=elastic
-      # - ES_PASSWORD=changeme
-      # Point the zipkin at the storage backend
-      - ES_HOSTS=elasticsearch:9200
-      # Uncomment to see requests to and from elasticsearch
+      # - ES_PASSWORD=password
+      # es 요청 로그를 확인하려면 주석 제거
       # - ES_HTTP_LOGGING=BODY
     ports:
       - "9411:9411"
@@ -53,22 +52,6 @@ services:
       - zipkin
     depends_on:
       - storage
-        
-#  dependencies:
-#    image: openzipkin/zipkin-dependencies
-#    build:
-#      context: ./zipkin-dependencies-test
-#      dockerfile: Dockerfile
-#    container_name: dependencies
-#    entrypoint: cat /etc/crontabs/root # crond -f
-#    environment:
-#      - STORAGE_TYPE=elasticsearch
-#      - ES_HOSTS=elasticsearch:9200
-#      - ES_NODES_WAN_ONLY=true
-#    networks:
-#      - zipkin
-#    depends_on:
-#      - storage
 
 volumes:
   data01:

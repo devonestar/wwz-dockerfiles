@@ -1,8 +1,8 @@
-version: '3'
-services:
-  api:
-    environment:
-      - PHASE=sandbox
+#version: '3'
+#services:
+#  api:
+#    environment:
+#      - PHASE=sandbox
 #    env_file:
 #      - env/gc-virtual.env
 #  web:
