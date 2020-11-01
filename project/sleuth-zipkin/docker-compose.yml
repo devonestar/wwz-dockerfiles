@@ -4,10 +4,11 @@ services:
     build:
       context: ./elasticsearch
       dockerfile: Dockerfile
+      args:
+        NODE_NAME: zipkin_es01
+        CLUSTER_INIT_MASTER_NODES: zipkin_es01
     container_name: elasticsearch
     environment:
-      - node.name=zipkin_es01
-      - cluster.initial_master_nodes=zipkin_es01
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 #         클러스터 구성 시 바인딩 할 원격 노드
