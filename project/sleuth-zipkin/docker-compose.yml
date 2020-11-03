@@ -53,6 +53,18 @@ services:
       - zipkin
     depends_on:
       - storage
+  
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - kibana
+      - zipkin
+    networks:
+      - zipkin
 
 volumes:
   data01:
