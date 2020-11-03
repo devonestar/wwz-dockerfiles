@@ -41,6 +41,5 @@ USER deploy:deploy
 
 # start daemon
 ENTRYPOINT ["./bin/elasticsearch"]
-#ENTRYPOINT ["/bin/bash"]
 
 EXPOSE 9200
