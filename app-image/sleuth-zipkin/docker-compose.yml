@@ -7,6 +7,7 @@ services:
       args:
         NODE_NAME: zipkin_es01
         CLUSTER_INIT_MASTER_NODES: zipkin_es01
+        ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
     container_name: elasticsearch
     environment:
       - bootstrap.memory_lock=true
@@ -22,7 +23,7 @@ services:
         soft: 65535
         hard: 65535
     volumes:
-      - data01:/usr/share/elasticsearch/data
+      - data01:/home/deploy/apps/elasticsearch-${ELASTICSEARCH_VERSION}/data
     ports:
       - "9200:9200"
     networks:
@@ -32,6 +33,8 @@ services:
     build:
       context: ./kibana
       dockerfile: Dockerfile
+      args:
+        KIBANA_VERSION: ${KIBANA_VERSION}
     container_name: kibana
     ports:
       - "5601:5601"
@@ -60,7 +63,7 @@ services:
 
 volumes:
   data01:
-    driver: local
+    external: true
 
 networks:
   zipkin:

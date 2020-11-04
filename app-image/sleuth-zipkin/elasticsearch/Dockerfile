@@ -1,6 +1,6 @@
 FROM wwzpeople/openjdk11
 
-ENV ELASTICSEARCH_VERSION 7.9.3
+ARG ELASTICSEARCH_VERSION
 
 ADD https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION-no-jdk-linux-x86_64.tar.gz /home/deploy/apps
 
@@ -26,7 +26,10 @@ ARG NODE_NAME
 
 ARG CLUSTER_INIT_MASTER_NODES
 
-RUN echo -e node.name: $NODE_NAME '\n'cluster.initial_master_nodes: $CLUSTER_INIT_MASTER_NODES >> /home/deploy/apps/elasticsearch-$ELASTICSEARCH_VERSION/config/elasticsearch.yml
+# local volume
+RUN su - deploy -c "mkdir /home/deploy/apps/elasticsearch-$ELASTICSEARCH_VERSION/data"
+
+RUN echo -e node.name: $NODE_NAME '\n'cluster.initial_master_nodes: $CLUSTER_INIT_MASTER_NODES '\n'path.data: /home/deploy/apps/elasticsearch-$ELASTICSEARCH_VERSION/data >> /home/deploy/apps/elasticsearch-$ELASTICSEARCH_VERSION/config/elasticsearch.yml
 
 # set java path
 ENV JAVA_HOME /home/deploy/apps/java
@@ -41,5 +44,6 @@ USER deploy:deploy
 
 # start daemon
 ENTRYPOINT ["./bin/elasticsearch"]
+#ENTRYPOINT ["/bin/bash"]
 
 EXPOSE 9200

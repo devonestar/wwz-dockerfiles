@@ -1,6 +1,6 @@
 FROM wwzpeople/centos7-deploy-user
 
-ENV KIBANA_VERSION 7.9.3
+ARG KIBANA_VERSION
 
 ADD https://artifacts.elastic.co/downloads/kibana/kibana-$KIBANA_VERSION-linux-x86_64.tar.gz /home/deploy/apps
 
