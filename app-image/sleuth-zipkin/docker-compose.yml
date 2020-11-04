@@ -1,0 +1,67 @@
+version: '2.2'
+services:
+  storage:
+    build:
+      context: ./elasticsearch
+      dockerfile: Dockerfile
+      args:
+        NODE_NAME: zipkin_es01
+        CLUSTER_INIT_MASTER_NODES: zipkin_es01
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+#         사양 문제로 heap size 축소 (권장 : 512m)
+      - "ES_JAVA_OPTS=-Xms384m -Xmx384m"
+#         클러스터 구성 시 바인딩 할 원격 노드
+#      - discovery.seed_hosts=es02,es03
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65535
+        hard: 65535
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - zipkin
+
+  kibana:
+    build:
+      context: ./kibana
+      dockerfile: Dockerfile
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - zipkin
+    depends_on:
+      - storage
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=elasticsearch
+      - ES_HOSTS=elasticsearch:9200
+      # X-Pack security 
+      # - ES_USERNAME=elastic
+      # - ES_PASSWORD=password
+      # es 요청 로그를 확인하려면 주석 제거
+      # - ES_HTTP_LOGGING=BODY
+    ports:
+      - "9411:9411"
+    networks:
+      - zipkin
+    depends_on:
+      - storage
+
+volumes:
+  data01:
+    driver: local
+
+networks:
+  zipkin:
+    driver: bridge
