@@ -10,13 +10,17 @@ services:
     container_name: elasticsearch
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#         사양 문제로 heap size 축소 (권장 : 512m)
+      - "ES_JAVA_OPTS=-Xms384m -Xmx384m"
 #         클러스터 구성 시 바인딩 할 원격 노드
 #      - discovery.seed_hosts=es02,es03
     ulimits:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65535
+        hard: 65535
     volumes:
       - data01:/usr/share/elasticsearch/data
     ports:
@@ -53,6 +57,18 @@ services:
       - zipkin
     depends_on:
       - storage
+  
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - kibana
+      - zipkin
+    networks:
+      - zipkin
 
 volumes:
   data01:
