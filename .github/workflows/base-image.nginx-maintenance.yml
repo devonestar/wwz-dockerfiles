@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
   push:
     tags:
-      - 'nginx1.14*'
+      - 'nginx-maintenance*'
 
 jobs:
   build-deploy-user:
@@ -11,12 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image
-        run: docker build -t wwzpeople/nginx1.14 .
-        working-directory: base-image/nginx1.14
+        run: docker build -t wwzpeople/nginx-maintenance .
+        working-directory: base-image/nginx-maintenance
       - name: push
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: wwzpeople/nginx1.14
+          name: wwzpeople/nginx-maintenance
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          workdir: base-image/nginx1.14
+          workdir: base-image/nginx-maintenance
